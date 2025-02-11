@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% block title %}Read{% endblock title %}
+{% block body %}
+<body>
+    <div class="container py-4">
+      <!-- Manga Description -->
+      <div class="card mb-4">
+        <div class="card-body">
+          <h1 class="card-title h4">Manga Title</h1>
+          <p class="card-text" id="manga-description">
+            This is a brief description of the manga. Follow the journey of the protagonist as they overcome challenges and discover new worlds.
+          </p>
+          <button class="btn btn-link p-0" id="toggle-description">Show More</button>
+        </div>
+      </div>
+  
+      <!-- Chapter Navigation -->
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="d-flex flex-wrap gap-2" id="chapter-list">
+          <!-- Chapter buttons will be dynamically added here -->
+        </div>
+        <p class="text-muted mb-0">Current Chapter: <span id="current-chapter">1</span></p>
+      </div>
+  
+      <!-- Manga Reader -->
+      <div class="border rounded ">
+        <img src="static/black_clover/chapter-1/page-1.png" id="manga-page" alt="Manga Page" class="img-fluid">
+        <div class="d-flex justify-content-between p-2 bg-light">
+          <button class="btn btn-outline-primary" id="prev-chapter" disabled>Previous Chapter</button>
+          <button class="btn btn-outline-primary" id="next-chapter">Next Chapter</button>
+        </div>
+        <iframe src="static/1.pdf" style="width:600px; height:500px;" frameborder="0"></iframe>
+
+      </div>
+    </div>
+  
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const description = document.getElementById('manga-description');
+        const toggleDescription = document.getElementById('toggle-description');
+        const chapterList = document.getElementById('chapter-list');
+        const currentChapterSpan = document.getElementById('current-chapter');
+        const mangaPage = document.getElementById('manga-page');
+        const prevChapterButton = document.getElementById('prev-chapter');
+        const nextChapterButton = document.getElementById('next-chapter');
+  
+        let chapters = 50; // Example number of chapters
+        let currentChapter = 1;
+  
+        // Populate chapter buttons
+        for (let i = 1; i <= chapters; i++) {
+          const button = document.createElement('button');
+          button.className = `btn ${i === 1 ? 'btn-primary' : 'btn-outline-primary'}`;
+          button.textContent = `Chapter ${i}`;
+          button.onclick = () => updateChapter(i);
+          chapterList.appendChild(button);
+        }
+  
+        // Toggle description
+        toggleDescription.addEventListener('click', () => {
+          if (toggleDescription.textContent === 'Show More') {
+            description.textContent = description.textContent + ' Follow the journey of the protagonist as they explore new adventures.';
+            toggleDescription.textContent = 'Show Less';
+          } else {
+            description.textContent = description.textContent.slice(0, 100) + '...';
+            toggleDescription.textContent = 'Show More';
+          }
+        });
+  
+        // Update chapter
+        function updateChapter(chapter) {
+          currentChapter = chapter;
+          currentChapterSpan.textContent = chapter;
+          mangaPage.src = `static/black_clover/chapter-${chapter}/page-1.png`;
+  
+          // Update buttons
+          prevChapterButton.disabled = currentChapter === 1;
+          nextChapterButton.disabled = currentChapter === chapters;
+  
+          // Highlight current chapter
+          Array.from(chapterList.children).forEach((btn, index) => {
+            btn.className = index + 1 === chapter ? 'btn btn-primary' : 'btn btn-outline-primary';
+          });
+        }
+  
+        // Chapter navigation
+        prevChapterButton.addEventListener('click', () => {
+          if (currentChapter > 1) updateChapter(currentChapter - 1);
+        });
+  
+        nextChapterButton.addEventListener('click', () => {
+          if (currentChapter < chapters) updateChapter(currentChapter + 1);
+        });
+      });
+    </script>
+{% endblock body %}

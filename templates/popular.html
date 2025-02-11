@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}Popular{% endblock title %}
+{% block body %}
+<section class="popular-manga py-5 bg-light">
+    <div class="container">
+      <h2 class="text-center fw-bold mb-5">Popular Manga</h2>
+      <div class="row g-4">
+        <!-- Manga Card 1 -->
+        <div class="col-md-6 col-lg-4">
+            <div class="card shadow-sm h-100" >
+              <img src="https://m.media-amazon.com/images/I/91WvJiO9VNL._UF1000,1000_QL80_.jpg"style="height: 300px;" class="card-img-top" alt="Attack on Titan">
+              <div class="card-body">
+                <h5 class="card-title fw-bold">Attack on Titan</h5>
+                <p class="card-text text-muted">In a world where humanity lives inside giant walls to escape the Titans, a young man seeks revenge and freedom.</p>
+                <p><strong>Chapters:</strong> 139</p>
+                <p><strong>Rating:</strong> ⭐⭐⭐⭐⭐</p>
+                <a href="read" class="btn btn-primary mt-3 w-100">Read Now</a>
+              </div>
+            </div>
+          </div>
+        <!-- Manga Card 2 -->
+        <div class="col-md-6 col-lg-4">
+          <div class="card shadow-sm h-100" >
+            <img src="https://m.media-amazon.com/images/I/91WvJiO9VNL._UF1000,1000_QL80_.jpg"style="height:300px" class="card-img-top" alt="One Piece">
+            <div class="card-body">
+              <h5 class="card-title fw-bold">One Piece</h5>
+              <p class="card-text text-muted">Follow Monkey D. Luffy and his crew as they search for the ultimate treasure, the One Piece.</p>
+              <p><strong>Chapters:</strong> 1090+</p>
+              <p><strong>Rating:</strong> ⭐⭐⭐⭐⭐</p>
+              <a href="#one-piece" class="btn btn-primary mt-3 w-100">Read Now</a>
+            </div>
+          </div>
+        </div>
+        <!-- Manga Card 3 -->
+        <div class="col-md-6 col-lg-4">
+          <div class="card  shadow-sm h-100" >
+            <img src="static/manga3.jpg"style="height:300px" class="card-img-top" alt="Naruto">
+            <div class="card-body">
+              <h5 class="card-title fw-bold">Naruto</h5>
+              <p class="card-text text-muted">Naruto Uzumaki, a young ninja with a dream of becoming the Hokage, battles foes and discovers his destiny.</p>
+              <p><strong>Chapters:</strong> 700</p>
+              <p><strong>Rating:</strong> ⭐⭐⭐⭐⭐</p>
+              <a href="#naruto" class="btn btn-primary mt-3 w-100">Read Now</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+{% endblock body %}

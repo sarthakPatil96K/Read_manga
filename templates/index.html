@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock title %}
+{% block body %}
+<!-- Carousel -->
+<div class="container-fluid px-0">
+  <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+    </div>
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img class="d-block w-100 " height="550px" src="static/bk1.jpg" alt="Manga 1">
+        <div class="carousel-caption d-none d-md-block">
+          <h1 class="text-light fw-bold">Welcome to Read Manga</h1>
+          <p class="lead text-light">Read your favorite manga anytime, anywhere!</p>
+          <a href="#categories" class="btn btn-primary btn-lg">Explore Now</a>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <img class="d-block w-100" height="550px"src="static/bk2.jpg" alt="Manga 2">
+        <div class="carousel-caption d-none d-md-block">
+          <h1 class="text-light fw-bold">Discover Amazing Stories</h1>
+          <p class="lead text-light">Explore a wide variety of genres and captivating tales.</p>
+          <a href="#categories" class="btn btn-primary btn-lg">Explore Now</a>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <img class="d-block w-100" height="550px" src="static/bk3.png" alt="Manga 3">
+        <div class="carousel-caption d-none d-md-block">
+          <h1 class="text-light fw-bold">Unleash Your Imagination</h1>
+          <p class="lead text-light">Dive into the world of action, romance, and adventure.</p>
+          <a href="#categories" class="btn btn-primary btn-lg">Explore Now</a>
+        </div>
+      </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+</div>
+
+<!-- Manga Categories Section -->
+<div class="container my-5" id="categories">
+  <h2 class="text-center">Browse Manga Categories</h2>
+  <div class="row text-center">
+    <div class="col-md-4">
+      <div class="card">
+        <img src="https://picsum.photos/500/300" class="card-img-top" alt="Action">
+        <div class="card-body">
+          <h5 class="card-title">Action</h5>
+          <a href="/action" class="btn btn-primary">Explore</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card">
+        <img src="https://picsum.photos/500/300" class="card-img-top" alt="Romance">
+        <div class="card-body">
+          <h5 class="card-title">Romance</h5>
+          <a href="/romance" class="btn btn-primary">Explore</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card">
+        <img src="https://picsum.photos/500/300" class="card-img-top" alt="Adventure">
+        <div class="card-body">
+          <h5 class="card-title">Adventure</h5>
+          <a href="/adventure" class="btn btn-primary">Explore</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% endblock body %}
+ 
