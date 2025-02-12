@@ -1,4 +1,3 @@
- 
 from django.shortcuts import render,HttpResponse
 from datetime import datetime 
 from home.models import contact 
@@ -11,7 +10,29 @@ def popular(request):
 def ongoing(request):
     return render(request,"ongoing.html")
 def action(request):
-    return render(request,"action.html")
+    from django.shortcuts import render
+import requests
+
+def action(request):
+    # Fetch manga data for action category from the API (or you can filter data here based on category)
+    response = requests.get("https://api.jikan.moe/v4/manga")
+    all_manga_data = response.json().get('data', [])
+
+    # Prepare the manga info to pass to the template
+    manga_info_list = []
+    for manga in all_manga_data:
+        manga_info = {
+            'title': manga.get('title', 'N/A'),
+            'status': manga.get('status', 'N/A'),
+            'synopsis': manga.get('synopsis', 'N/A'),
+            'rating': manga.get('score', 'N/A'),
+            'url': manga.get('images', {}).get('webp', {}).get('image_url', 'N/A')  # Use webp image URL
+        }
+        manga_info_list.append(manga_info)
+
+    # Pass the manga data to the action.html template
+    return render(request, "action.html", {'manga_info_list': manga_info_list})
+
 def about(request):
     return render(request,"about.html")
 def Contact(request):
@@ -25,3 +46,5 @@ def Contact(request):
 
 def read(request):
     return render(request,"read.html")
+
+ 
