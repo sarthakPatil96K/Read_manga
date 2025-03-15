@@ -154,22 +154,28 @@ def genre_manga_view(request, genre_name):
     mangas = Manga.objects.filter(genre__icontains=genre_name)
     return render(request, 'genre.html', {'manga_info_list': mangas})
 
+from django.shortcuts import render, redirect
+from django.templatetags.static import static
+
 def index(request):
     if request.user.is_anonymous:
         return redirect("/login")
     
+    # Use the {% static %} tag to reference images from the static folder
     genres = {
-        'Action': 'https://picsum.photos/500/300?random=1',
-        'Romance': 'https://picsum.photos/500/300?random=2',
-        'Adventure': 'https://picsum.photos/500/300?random=3',
-        'Fantasy': 'https://picsum.photos/500/300?random=4',
-        'Horror': 'https://picsum.photos/500/300?random=5',
-        'Comedy': 'https://picsum.photos/500/300?random=6',
-        'Mystery': 'https://picsum.photos/500/300?random=7',
-        'Sci-Fi': 'https://picsum.photos/500/300?random=8',
-        'Drama': 'https://picsum.photos/500/300?random=9'
+        'Action': static('images/action_img.jpg'),
+        'Romance': static('images/romance_img.avif'),
+        'Adventure': static('images/adventure_img.avif'),
+        'Fantasy': static('images/fantacy_img.avif'),
+        'Horror': static('images/horror_img.avif'),
+        'Comedy': static('images/comedy_img.avif'),
+        'Mystery': static('images/mystery_img.png'),
+        'Sci-Fi': static('images/scifi_img.webp'),
+        'Drama': static('images/drama_img.jpg')
     }
+    
     return render(request, "index.html", {'genres': genres})
+
 
 from django.shortcuts import render
 from .models import Manga
