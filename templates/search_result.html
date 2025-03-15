@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}Search Results{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h1>Search Results for "{{ query }}"</h1>
+
+        {% if mangas %}
+            <div class="row">
+                {% for manga in mangas %}
+                    <div class="col-md-4 mb-4">
+                        <div class="card" style="width: 18rem;">
+                            <!-- Manga Cover Image -->
+                            <img src="{{ manga.image_url }}" class="card-img-top" alt="{{ manga.title }}">
+                            <div class="card-body">
+                                <!-- Manga Title -->
+                                <h5 class="card-title">{{ manga.title }}</h5>
+                                
+                                <!-- Manga Description (Truncated) -->
+                                <p class="card-text">{{ manga.description|truncatewords:20 }}</p>
+                                
+                                <!-- Manga Genre -->
+                                <p class="card-text"><strong>Genre:</strong> {{ manga.genre }}</p>
+                                
+                                <!-- Manga Rating (Optional) -->
+                                {% if manga.rating %}
+                                    <p class="card-text"><strong>Rating:</strong> {{ manga.rating }}</p>
+                                {% endif %}
+                                
+                                <!-- Manga Airing Status -->
+                                <p class="card-text"><strong>Status:</strong> {{ manga.airing_status }}</p>
+                                
+                                <!-- Button to Read Manga (Adjust URL as per your route) -->
+                                <a href="{% url 'read_manga' manga.genre manga.title 1 %}" class="btn btn-primary">Read First Chapter</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>No manga found for "{{ query }}".</p>
+        {% endif %}
+    </div>
+{% endblock %}

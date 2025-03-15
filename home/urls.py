@@ -5,9 +5,8 @@ from home import views
 urlpatterns = [
     path("", views.index, name="home"),
     path("home", views.index, name="home"),
-    path('genre/<str:genre_name>/', views.genre_page, name='genre_page'),
     path('genre/<str:genre_name>/', views.genre_manga_view, name='genre_manga'),
-    path("popular", views.popular, name="popular"),
+    path("popular", views.popular_manga, name="popular"),
     path("action", views.action, name="action"),
     path("Contact", views.Contact, name="Contact"),
     path("about", views.about, name="about"),

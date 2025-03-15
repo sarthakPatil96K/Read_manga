@@ -125,6 +125,8 @@ from django.shortcuts import render
 from .models import Manga
 
 def genre_page(request, genre_name):
+    if request.user.is_anonymous:
+        return redirect("/login")
     mangas = Manga.objects.filter(genre__icontains=genre_name)
     return render(request, 'genre.html', {'mangas': mangas, 'genre_name': genre_name})
 
@@ -132,6 +134,8 @@ from django.shortcuts import render
 from .models import Manga
 
 def genre_page(request, genre_name):
+    if request.user.is_anonymous:
+        return redirect("/login")
     # Filter manga based on the genre
     manga_list = Manga.objects.filter(genre__icontains=genre_name)
 
@@ -145,6 +149,8 @@ from django.shortcuts import render
 from .models import Manga
 
 def genre_manga_view(request, genre_name):
+    if request.user.is_anonymous:
+        return redirect("/login")
     mangas = Manga.objects.filter(genre__icontains=genre_name)
     return render(request, 'genre.html', {'manga_info_list': mangas})
 
@@ -175,13 +181,16 @@ def search_manga(request):
     else:
         mangas = Manga.objects.all()
 
-    return render(request, 'search_results.html', {'mangas': mangas, 'query': query})
+    # Passing query and mangas to the template
+    return render(request, 'search_result.html', {'mangas': mangas, 'query': query})
 
 import os
 from django.shortcuts import render, get_object_or_404
 from .models import Manga
 
 def read_manga(request, genre, manga_title, chapter_number):
+    if request.user.is_anonymous:
+        return redirect("/login")
     # Convert genre to match database format (capitalize first letter)
     genre = genre.capitalize()
 
@@ -216,3 +225,15 @@ def read_manga(request, genre, manga_title, chapter_number):
     }
 
     return render(request, "read.html", context)
+
+import random
+from django.shortcuts import render
+from .models import Manga
+
+def popular_manga(request):
+    if request.user.is_anonymous:
+        return redirect("/login")
+    all_manga = list(Manga.objects.all())
+    random_manga = random.sample(all_manga, min(len(all_manga), 6))  # Get up to 6 random manga
+    
+    return render(request, "popular.html", {"random_manga": random_manga})

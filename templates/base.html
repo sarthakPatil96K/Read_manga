@@ -44,10 +44,11 @@
                         </li>
                     </ul>
     
-                    <form class="d-flex me-3" role="search">
-                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <form class="d-flex me-3" role="search" action="{% url 'search_manga' %}" method="get">
+                        <input class="form-control me-2" type="search" name="q" placeholder="Search" aria-label="Search" value="{{ request.GET.q }}">
                         <button class="btn btn-outline-success" type="submit">Search</button>
                     </form>
+                    
     
                     <!-- Check if user is authenticated -->
                     {% if user.is_authenticated %}
