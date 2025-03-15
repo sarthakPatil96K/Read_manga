@@ -50,33 +50,17 @@
 <div class="container my-5" id="categories">
   <h2 class="text-center">Browse Manga Categories</h2>
   <div class="row text-center">
-    <div class="col-md-4">
-      <div class="card">
-        <img src="https://picsum.photos/500/300" class="card-img-top" alt="Action">
-        <div class="card-body">
-          <h5 class="card-title">Action</h5>
-          <a href="/action" class="btn btn-primary">Explore</a>
+    {% for genre, image in genres.items %}
+      <div class="col-md-4 mb-4">
+        <div class="card">
+          <img src="{{ image }}" class="card-img-top" alt="{{ genre }}">
+          <div class="card-body">
+            <h5 class="card-title">{{ genre }}</h5>
+            <a href="/genre/{{ genre|lower }}" class="btn btn-primary">Explore</a>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="col-md-4">
-      <div class="card">
-        <img src="https://picsum.photos/500/300" class="card-img-top" alt="Romance">
-        <div class="card-body">
-          <h5 class="card-title">Romance</h5>
-          <a href="/romance" class="btn btn-primary">Explore</a>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-4">
-      <div class="card">
-        <img src="https://picsum.photos/500/300" class="card-img-top" alt="Adventure">
-        <div class="card-body">
-          <h5 class="card-title">Adventure</h5>
-          <a href="/adventure" class="btn btn-primary">Explore</a>
-        </div>
-      </div>
-    </div>
+    {% endfor %}
   </div>
 </div>
 

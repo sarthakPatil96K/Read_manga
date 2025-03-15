@@ -5,10 +5,17 @@ from home import views
 urlpatterns = [
     path("", views.index, name="home"),
     path("home", views.index, name="home"),
+    path('genre/<str:genre_name>/', views.genre_page, name='genre_page'),
+    path('genre/<str:genre_name>/', views.genre_manga_view, name='genre_manga'),
     path("popular", views.popular, name="popular"),
     path("action", views.action, name="action"),
     path("Contact", views.Contact, name="Contact"),
     path("about", views.about, name="about"),
     path("ongoing", views.ongoing, name="ongoing"),
     path("read", views.read, name="read"),
+    path("login",views.login_user,name="login"),
+    path("logout",views.logout_user,name="logout"),
+    path("signup", views.signup_user,name="signup"),
+    path('search/', views.search_manga, name='search_manga'),
+    path('read/<str:genre>/<str:manga_title>/<int:chapter_number>/', views.read_manga, name='read_manga'),
 ]

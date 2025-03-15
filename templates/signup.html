@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Signup</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css">
+
+    <style>
+        html,
+        body {
+            height: 100%;
+        }
+
+        body {
+            display: flex;
+            align-items: center;
+            padding-top: 40px;
+            padding-bottom: 40px;
+            background-color:hsl(0, 29.60%, 89.40%);
+            color: white;
+        }
+
+        .form-signin {
+            width: 100%;
+            max-width: 330px;
+            padding: 15px;
+            margin: auto;
+             
+            border-radius: 12px;
+             
+        }
+
+        .form-control {
+             
+            border: none;
+            color: white;
+        }
+
+        .form-control:focus {
+             
+            color: white;
+            box-shadow: none;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+        p {
+            color: #b0b0b0;
+        }
+
+        .error-message {
+            color: red;
+        }
+    </style>
+</head>
+
+<body class="text-center">
+    <form class="form-signin" method="POST" action="/signup">
+        {% csrf_token %}
+        <h1 class="h3 mb-3 font-weight-normal">Create Account</h1>
+
+        <input type="text" name="username" class="form-control mb-2" placeholder="Username" required autofocus>
+        <input type="password" name="password" class="form-control mb-2" placeholder="Password" required>
+        <input type="password" name="confirm_password" class="form-control mb-3" placeholder="Confirm Password" required>
+
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign Up</button>
+
+        {% if error %}
+        <p class="error-message mt-3">{{ error }}</p>
+        {% endif %}
+
+        <p class="mt-4">&copy; 2024-2025</p>
+    </form>
+</body>
+
+</html>
