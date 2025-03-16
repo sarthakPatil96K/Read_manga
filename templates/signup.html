@@ -33,17 +33,18 @@
         }
 
         .form-control {
-             
-            border: none;
-            color: white;
+            background-color: transparent; /* Keep it transparent */
+            border: 1px solid #ccc; /* Add a light border for visibility */
+            color: black; /* Change text color to black */
         }
-
+        
         .form-control:focus {
-             
-            color: white;
-            box-shadow: none;
+            background-color: white; /* Ensure visibility when focused */
+            color: black;
+            border: 1px solid #007bff; /* Highlight focus */
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
         }
-
+        
         .btn-primary {
             background-color: #007bff;
             border: none;
