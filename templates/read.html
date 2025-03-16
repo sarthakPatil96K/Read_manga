@@ -1,32 +1,49 @@
 {% extends "base.html" %}
-{% block title %}{{ manga.title }}{% endblock title %}
+{% block title %}About{% endblock title %}
 {% block body %}
+ 
+{% load static %}
 
-<div class="container py-4">
-  <h1 class="text-center">{{ manga.title }}</h1>
-  <p>{{ manga.description }}</p>
-
-  <!-- Show chapters only when available -->
-  {% if all_chapters %}
-    <h5>Chapters:</h5>
-    <div class="d-flex flex-wrap gap-2 mb-4">
-      {% for chapter in all_chapters %}
-        <a href="{% url 'read_manga' genre=manga.genre|lower manga_title=manga.title|slugify chapter_number=chapter|slice:'8:' %}" 
-          class="btn btn-outline-primary {% if chapter_number == chapter|slice:'8:'|add:'0' %}active{% endif %}">
-          Chapter {{ chapter|slice:'8:' }}
-        </a>
-      {% endfor %}
+<!-- Manga Information Section -->
+<div class="container my-5">
+    <h2 class="text-center">{{ manga.title }} - Chapter {{ chapter_number }}</h2>
+    <div class="row">
+        <div class="col-md-8">
+            <h4>About the Manga</h4>
+            <p><strong>Genre:</strong> {{ manga.genre }}</p>
+            <p><strong>Status:</strong> {{ manga.airing_status }}</p>
+            <p><strong>Rating:</strong> {{ manga.rating }}</p>
+            <p><strong>Description:</strong></p>
+            <p>{{ manga.description }}</p>
+        </div>
+        <div class="col-md-4">
+            <!-- Display manga cover image from the URL stored in the database -->
+            <img src="{{ cover_image_url }}" class="img-fluid" alt="{{ manga.title }}">
+        </div>
     </div>
-  {% else %}
-    <p>No chapters available yet.</p>
-  {% endif %}
 
-  <!-- Show manga page if chapter exists -->
-  {% if chapter_exists %}
-    <div class="text-center">
-      <img src="/static/{{ manga.title|slugify }}/chapter-{{ chapter_number }}/page-1.png" class="img-fluid" alt="Manga Page">
+    <!-- Manga Pages Section -->
+    <h4 class="text-center my-5">Pages of Chapter {{ chapter_number }}</h4>
+    <div class="row text-center">
+        {% if chapter_exists %}
+            {% if all_pages %}
+                {% for page in all_pages %}
+                    <div class="col-md-4 mb-4">
+                        <div class="card">
+                            <img src="{% static 'manga/' %}{{ manga_folder }}/chapter-{{ chapter_number }}/{{ page }}" class="card-img-top" alt="Page {{ page_numbers|slice:forloop.counter0|first }}">
+                            <div class="card-body">
+                                <h5 class="card-title">Page {{ page_numbers|slice:forloop.counter0|first }}</h5>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p class="text-center text-warning">No pages available for this chapter yet.</p>
+            {% endif %}
+        {% else %}
+            <p class="text-center text-danger">Chapter not available.</p>
+        {% endif %}
     </div>
-  {% endif %}
 </div>
 
 {% endblock body %}

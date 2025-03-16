@@ -191,12 +191,18 @@ def search_manga(request):
     return render(request, 'search_result.html', {'mangas': mangas, 'query': query})
 
 import os
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, redirect
+from django.templatetags.static import static
+from .models import Manga
+
+import os
+from django.shortcuts import render, redirect
 from .models import Manga
 
 def read_manga(request, genre, manga_title, chapter_number):
     if request.user.is_anonymous:
         return redirect("/login")
+    
     # Convert genre to match database format (capitalize first letter)
     genre = genre.capitalize()
 
@@ -212,25 +218,35 @@ def read_manga(request, genre, manga_title, chapter_number):
 
     # Path where manga chapters are stored
     manga_path = f"static/{formatted_title}/"
+    chapter_path = os.path.join(manga_path, f"chapter-{chapter_number}")
 
     # Check if chapter exists
-    chapter_path = os.path.join(manga_path, f"chapter-{chapter_number}")
     chapter_exists = os.path.exists(chapter_path)
 
-    # List all available chapters (if any)
-    all_chapters = sorted(
-        [folder for folder in os.listdir(manga_path) if folder.startswith("chapter-")] if os.path.exists(manga_path) else [],
-        key=lambda x: int(x.split("-")[1])
-    )
+    if chapter_exists:
+        # List all available pages for the chapter (if any)
+        all_pages = sorted(
+            [page for page in os.listdir(chapter_path) if page.endswith('.jpg') or page.endswith('.png')],
+            key=lambda x: int(x.split('-')[1].split('.')[0])  # Sort by the page number
+        )
+    else:
+        all_pages = []  # No pages found for the chapter
+
+    # Prepare page numbers for display
+    page_numbers = [page.split('-')[1].split('.')[0] for page in all_pages]
 
     context = {
         "manga": manga,
         "chapter_number": chapter_number,
         "chapter_exists": chapter_exists,
-        "all_chapters": all_chapters,
+        "all_pages": all_pages,
+        "page_numbers": page_numbers,  # Pass page numbers to template
+        "cover_image_url": manga.image_url  # Pass the manga cover image URL to the template
     }
 
     return render(request, "read.html", context)
+
+
 
 import random
 from django.shortcuts import render
