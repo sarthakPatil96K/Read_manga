@@ -16,5 +16,6 @@ urlpatterns = [
     path("logout",views.logout_user,name="logout"),
     path("signup", views.signup_user,name="signup"),
     path('search/', views.search_manga, name='search_manga'),
-    path('read/<str:genre>/<str:manga_title>/<int:chapter_number>/', views.read_manga, name='read_manga'),
+    path('read/<str:genre>/<path:manga_title>/<int:chapter_number>/', views.read_manga, name='read_manga'),
+    #path("api/get-chapter-images/", views.get_chapter_images_api, name="get_chapter_images_api"),
 ]

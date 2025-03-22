@@ -1,49 +1,93 @@
 {% extends "base.html" %}
-{% block title %}About{% endblock title %}
+{% block title %}{{ manga.title }}{% endblock title %}
 {% block body %}
- 
+
 {% load static %}
 
 <!-- Manga Information Section -->
 <div class="container my-5">
-    <h2 class="text-center">{{ manga.title }} - Chapter {{ chapter_number }}</h2>
+    <h2 class="text-center">{{ manga.title }}</h2>
+
     <div class="row">
         <div class="col-md-8">
             <h4>About the Manga</h4>
-            <p><strong>Genre:</strong> {{ manga.genre }}</p>
+            <p><strong>Genre:</strong> {{ genre }}</p>
             <p><strong>Status:</strong> {{ manga.airing_status }}</p>
             <p><strong>Rating:</strong> {{ manga.rating }}</p>
             <p><strong>Description:</strong></p>
             <p>{{ manga.description }}</p>
         </div>
         <div class="col-md-4">
-            <!-- Display manga cover image from the URL stored in the database -->
-            <img src="{{ cover_image_url }}" class="img-fluid" alt="{{ manga.title }}">
+            {% if cover_image_url %}
+            <img src="{{ cover_image_url }}" class="img-fluid rounded" alt="{{ manga.title }}">
+            {% else %}
+            <p class="text-muted">No cover image available</p>
+            {% endif %}
         </div>
     </div>
 
-    <!-- Manga Pages Section -->
-    <h4 class="text-center my-5">Pages of Chapter {{ chapter_number }}</h4>
-    <div class="row text-center">
-        {% if chapter_exists %}
-            {% if all_pages %}
-                {% for page in all_pages %}
-                    <div class="col-md-4 mb-4">
-                        <div class="card">
-                            <img src="{% static 'manga/' %}{{ manga_folder }}/chapter-{{ chapter_number }}/{{ page }}" class="card-img-top" alt="Page {{ page_numbers|slice:forloop.counter0|first }}">
-                            <div class="card-body">
-                                <h5 class="card-title">Page {{ page_numbers|slice:forloop.counter0|first }}</h5>
-                            </div>
-                        </div>
-                    </div>
-                {% endfor %}
-            {% else %}
-                <p class="text-center text-warning">No pages available for this chapter yet.</p>
-            {% endif %}
+    <!-- Navigation Buttons -->
+    <!-- Navigation Buttons -->
+    <div class="d-flex justify-content-center align-items-center mt-3">
+        {% if prev_chapter is not None %}
+        <a href="{% url 'read_manga' genre manga.title|slugify prev_chapter %}" class="btn btn-primary mx-2">
+            ⬅ Previous Chapter
+        </a>
         {% else %}
-            <p class="text-center text-danger">Chapter not available.</p>
+        <button class="btn btn-secondary mx-2" disabled>⬅ Previous Chapter</button>
+        {% endif %}
+
+        <span class="mx-3 fw-bold">Chapter {{ chapter_number }}</span>
+
+        {% if next_chapter is not None %}
+        <a href="{% url 'read_manga' genre manga.title|slugify next_chapter %}" class="btn btn-primary mx-2">
+            Next Chapter ➡
+        </a>
+        {% else %}
+        <button class="btn btn-secondary mx-2" disabled>Next Chapter ➡</button>
         {% endif %}
     </div>
+
+
+
+    <!-- Manga Pages Section -->
+    <h4 class="text-center my-4">Pages of Chapter {{ chapter_number }}</h4>
+    <div class="row text-center">
+        {% if chapter_exists %}
+        {% if all_pages %}
+        {% for page in all_pages %}
+        <div class="mb-4">
+            <img src="{{ page }}" class="img-fluid" alt="Manga Page">
+        </div>
+        {% endfor %}
+        {% else %}
+        <p class="text-center text-warning">No pages available for this chapter yet.</p>
+        {% endif %}
+        {% else %}
+        <p class="text-center text-danger">Chapter not available.</p>
+        {% endif %}
+    </div>
+    <!-- Navigation Buttons -->
+    <div class="d-flex justify-content-center align-items-center mt-3">
+        {% if prev_chapter is not None %}
+        <a href="{% url 'read_manga' genre manga.title|slugify prev_chapter %}" class="btn btn-primary mx-2">
+            ⬅ Previous Chapter
+        </a>
+        {% else %}
+        <button class="btn btn-secondary mx-2" disabled>⬅ Previous Chapter</button>
+        {% endif %}
+
+        <span class="mx-3 fw-bold">Chapter {{ chapter_number }}</span>
+
+        {% if next_chapter is not None %}
+        <a href="{% url 'read_manga' genre manga.title|slugify next_chapter %}" class="btn btn-primary mx-2">
+            Next Chapter ➡
+        </a>
+        {% else %}
+        <button class="btn btn-secondary mx-2" disabled>Next Chapter ➡</button>
+        {% endif %}
+    </div>
+
 </div>
 
 {% endblock body %}

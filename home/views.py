@@ -1,4 +1,4 @@
-from django.shortcuts import render,HttpResponse,redirect
+from django.shortcuts import get_object_or_404, render,HttpResponse,redirect
 from datetime import datetime 
 from home.models import contact 
 from django.contrib.auth.models import User
@@ -190,61 +190,57 @@ def search_manga(request):
     # Passing query and mangas to the template
     return render(request, 'search_result.html', {'mangas': mangas, 'query': query})
 
-import os
-from django.shortcuts import render, redirect
-from django.templatetags.static import static
+ 
+ 
+from django.shortcuts import render, get_object_or_404
+from django.utils.text import slugify
 from .models import Manga
+from .mangadex_api import get_manga_id, get_chapter_id, get_chapter_images, get_adjacent_chapters  # type: ignore
 
-import os
-from django.shortcuts import render, redirect
-from .models import Manga
 
 def read_manga(request, genre, manga_title, chapter_number):
-    if request.user.is_anonymous:
-        return redirect("/login")
-    
-    # Convert genre to match database format (capitalize first letter)
-    genre = genre.capitalize()
+    # Convert slugified title back to original format
+    normalized_title = manga_title.replace("-", " ").replace(":", "")
 
-    # Convert URL slug back to a proper title format (replace hyphens with spaces)
-    formatted_title = manga_title.replace("-", " ")
+    # Get manga object
+    manga = get_object_or_404(Manga, title__iexact=normalized_title)
 
-    # Fetch the first available manga entry (avoid MultipleObjectsReturned error)
-    manga = Manga.objects.filter(title__iexact=formatted_title, genre__iexact=genre).first()
+    manga_id = get_manga_id(manga.title)
+    print(f"Fetched MangaDex ID: {manga_id}")  # Debugging
 
-    # Handle case where no manga is found
-    if not manga:
-        return render(request, "404.html", {"message": "Manga not found"}, status=404)
+    chapter_id = get_chapter_id(manga_id, chapter_number)
 
-    # Path where manga chapters are stored
-    manga_path = f"static/{formatted_title}/"
-    chapter_path = os.path.join(manga_path, f"chapter-{chapter_number}")
+    # Fetch cover image from database
+    cover_image_url = manga.image_url  # ✅ FIXED: Use 'image_url' from the model
 
-    # Check if chapter exists
-    chapter_exists = os.path.exists(chapter_path)
-
-    if chapter_exists:
-        # List all available pages for the chapter (if any)
-        all_pages = sorted(
-            [page for page in os.listdir(chapter_path) if page.endswith('.jpg') or page.endswith('.png')],
-            key=lambda x: int(x.split('-')[1].split('.')[0])  # Sort by the page number
-        )
+    if not chapter_id:
+        chapter_exists = False
+        all_pages = []
     else:
-        all_pages = []  # No pages found for the chapter
+        chapter_exists = True
+        all_pages = get_chapter_images(chapter_id)
 
-    # Prepare page numbers for display
-    page_numbers = [page.split('-')[1].split('.')[0] for page in all_pages]
+    prev_chapter, next_chapter = get_adjacent_chapters(manga_id, chapter_number)
 
-    context = {
+    # ✅ Fix: Ensure values are integers or None
+    prev_chapter = int(prev_chapter) if prev_chapter is not None else None
+    next_chapter = int(next_chapter) if next_chapter is not None else None
+
+    print(f"Current Chapter: {chapter_number}, Previous: {prev_chapter}, Next: {next_chapter}")
+
+    return render(request, "read.html", {
         "manga": manga,
-        "chapter_number": chapter_number,
+        "genre": genre,
+        "chapter_number": int(chapter_number),
         "chapter_exists": chapter_exists,
         "all_pages": all_pages,
-        "page_numbers": page_numbers,  # Pass page numbers to template
-        "cover_image_url": manga.image_url  # Pass the manga cover image URL to the template
-    }
+        "prev_chapter": prev_chapter,  # ✅ FIXED: Now passes the actual chapter number
+        "next_chapter": next_chapter,  # ✅ FIXED: Now passes the actual chapter number
+        "cover_image_url": cover_image_url,
+    })
 
-    return render(request, "read.html", context)
+
+
 
 
 
@@ -259,3 +255,6 @@ def popular_manga(request):
     random_manga = random.sample(all_manga, min(len(all_manga), 6))  # Get up to 6 random manga
     
     return render(request, "popular.html", {"random_manga": random_manga})
+
+
+
