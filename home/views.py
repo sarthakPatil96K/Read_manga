@@ -94,32 +94,35 @@ def logout_user(request):
     return redirect("/login")
 
 from django.shortcuts import render, redirect
-from django.contrib.auth.models import User
 from django.contrib.auth import login
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
+from django import forms
+
+# Custom Signup Form to include email, first name, and last name
+class CustomSignupForm(UserCreationForm):
+    email = forms.EmailField(required=True)
+    first_name = forms.CharField(max_length=30, required=False)
+    last_name = forms.CharField(max_length=30, required=False)
+
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'first_name', 'last_name', 'password1', 'password2']
 
 def signup_user(request):
     if request.method == "POST":
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        confirm_password = request.POST.get('confirm_password')
+        form = CustomSignupForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect("/")  # Redirect to homepage after successful signup
+        else:
+            # Form is not valid, will render with errors
+            return render(request, 'signup.html', {'form': form})
+    else:
+        form = CustomSignupForm()
+    return render(request, 'signup.html', {'form': form})
 
-        # Check if passwords match
-        if password != confirm_password:
-            return render(request, 'signup.html', {'error': 'Passwords do not match'})
-
-        # Check if the user already exists
-        if User.objects.filter(username=username).exists():
-            return render(request, 'signup.html', {'error': 'Username already taken'})
-
-        # Create the user
-        user = User.objects.create_user(username=username, password=password)
-        user.save()
-
-        # Auto-login the user after signup
-        login(request, user)
-        return redirect("/")
-    
-    return render(request, 'signup.html')
 
 from django.shortcuts import render
 from .models import Manga
