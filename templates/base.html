@@ -14,7 +14,7 @@
     <div class="container-fluid bg-dark">
         <nav class="navbar navbar-expand-lg bg-dark navbar-dark">
             <div class="container-fluid">
-                <a class="navbar-brand" href="#">Read_Manga</a>
+                <a class="navbar-brand" href="{% url 'home' %}">Read_Manga</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
@@ -23,10 +23,10 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="home">Home</a>
+                            <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/popular">Popular</a>
+                            <a class="nav-link" href="{% url 'popular' %}">Popular</a>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -34,33 +34,29 @@
                             </a>
                             <ul class="dropdown-menu">
                               {% for genre in genres %}
-                                <li><a class="dropdown-item" href="/genre/{{ genre|lower }}">{{ genre }}</a></li>
+                                <li><a class="dropdown-item" href="{% url 'genre_manga' genre|lower %}">{{ genre }}</a></li>
                               {% endfor %}
                             </ul>
-                          </li>
-                          
+                        </li>
                         <li class="nav-item">
-                            <a class="nav-link " role="button" href="/Contact">Contact Us</a>
+                            <a class="nav-link" href="{% url 'Contact' %}">Contact Us</a>
                         </li>
                     </ul>
-    
+            
                     <form class="d-flex me-3" role="search" action="{% url 'search_manga' %}" method="get">
                         <input class="form-control me-2" type="search" name="q" placeholder="Search" aria-label="Search" value="{{ request.GET.q }}">
                         <button class="btn btn-outline-success" type="submit">Search</button>
                     </form>
-                    
-    
-                    <!-- Check if user is authenticated -->
+            
                     {% if user.is_authenticated %}
-                    <a href="/logout" class="btn btn-outline-danger">Logout</a>
+                    <a href="{% url 'logout' %}" class="btn btn-outline-danger">Logout</a>
                     {% else %}
-                    <a href="/login" class="btn btn-outline-primary me-2">Login</a>
-                    <a href="/signup" class="btn btn-outline-info">Sign Up</a>
+                    <a href="{% url 'login' %}" class="btn btn-outline-primary me-2">Login</a>
+                    <a href="{% url 'signup' %}" class="btn btn-outline-info">Sign Up</a>
                     {% endif %}
-    
                 </div>
             </div>
-        </nav>
+            
     </div>
     
     {% block body %}{% endblock body %}
@@ -81,8 +77,8 @@
                 <div class="col-md-4 text-center">
                     <h5 class="fw-bold">Quick Links</h5>
                     <ul class="list-unstyled">
-                        <li><a href="home" class="text-light text-decoration-none">Home</a></li>
-                        <li><a href="popular" class="text-light text-decoration-none">Popular Manga</a></li>
+                        <li><a href="{% url 'home' %}" class="text-light text-decoration-none">Home</a></li>
+                        <li><a href="{% url 'popular' %}" class="text-light text-decoration-none">Popular Manga</a></li>
                         <li><a href="#genres" class="text-light text-decoration-none">Genres</a></li>
                         <li><a href="/Contact" class="text-light text-decoration-none">Contact Us</a></li>
                     </ul>

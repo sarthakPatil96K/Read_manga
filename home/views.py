@@ -8,11 +8,6 @@ from django.contrib.auth import logout,login
 #admin: patilsarthak password sarthak
 #user anoj password SARTHAK@12
 # Create your views here.
-# def index(request):
-#     if request.user.is_anonymous:
-#         return redirect("/login")
-#     return render(request,"index.html")
-    #return HttpResponse("Hello sarthak here")
 def popular(request):
     if request.user.is_anonymous:
         return redirect("/login")
@@ -25,34 +20,8 @@ def action(request):
     if request.user.is_anonymous:
         return redirect("/login")
     from django.shortcuts import render
-import requests
-
-def action(request):
-    if request.user.is_anonymous:
-        return redirect("/login")
-    # Fetch manga data for action category from the API (or you can filter data here based on category)
-    response = requests.get("https://api.jikan.moe/v4/manga")
-    all_manga_data = response.json().get('data', [])
-
-    # Prepare the manga info to pass to the template
-    manga_info_list = []
-    for manga in all_manga_data:
-        manga_info = {
-            'title': manga.get('title', 'N/A'),
-            'status': manga.get('status', 'N/A'),
-            'synopsis': manga.get('synopsis', 'N/A'),
-            'rating': manga.get('score', 'N/A'),
-            'url': manga.get('images', {}).get('webp', {}).get('image_url', 'N/A')  # Use webp image URL
-        }
-        manga_info_list.append(manga_info)
-
-    # Pass the manga data to the action.html template
-    return render(request, "action.html", {'manga_info_list': manga_info_list})
-
-def about(request):
-    if request.user.is_anonymous:
-        return redirect("/login")
-    return render(request,"about.html")
+ 
+ 
 
 def Contact(request):
     if request.user.is_anonymous:
@@ -241,11 +210,6 @@ def read_manga(request, genre, manga_title, chapter_number):
         "next_chapter": next_chapter,  # ✅ FIXED: Now passes the actual chapter number
         "cover_image_url": cover_image_url,
     })
-
-
-
-
-
 
 import random
 from django.shortcuts import render
